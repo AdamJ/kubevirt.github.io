@@ -11,6 +11,8 @@ order: 4
   </div>
   <div class="row">
     <div class="col-sm-12 col-md-3">
+      <!-- HTML elements for search -->
+      <input type="text" id="search-input" placeholder="Search blog posts..">
       {% if site.data.blogs_toc.toc[0] %}
         {% for item in site.data.blogs_toc.toc %}
           {% if item.subfolderitems[0] %}
@@ -40,6 +42,11 @@ order: 4
       {% endif %}
     </div>
     <div class="col-sm-12 col-md-9">
+      <ul id="results-container">
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>
+        </li>
+      </ul>
       <ul class="posts">
         {% for post in paginator.posts %}
           <li>
@@ -57,3 +64,16 @@ order: 4
     {% include paging.html %}
   </div>
 </div>
+<script src="{{ site.baseurl }}/js/simple-jekyll-search.min.js"></script>
+<script>
+  window.simpleJekyllSearch = new SimpleJekyllSearch({
+    searchInput: document.getElementById('search-input'),
+    resultsContainer: document.getElementById('results-container'),
+    json: '{{ site.baseurl }}/search.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+  })
+</script>
